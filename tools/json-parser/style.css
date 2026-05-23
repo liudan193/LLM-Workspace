@@ -1,0 +1,246 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0f1115;
+  --bg-soft: #181b22;
+  --bg-card: #1f2330;
+  --border: #2a2f3d;
+  --text: #e6e8ee;
+  --text-dim: #8b93a7;
+  --accent: #6c8cff;
+
+  /* JSON 配色（VSCode Dark+ 风格） */
+  --c-key: #9cdcfe;
+  --c-string: #ce9178;
+  --c-number: #b5cea8;
+  --c-boolean: #569cd6;
+  --c-null: #808080;
+  --c-bracket: #ffd700;
+  --c-comma: #d4d4d4;
+}
+html, body {
+  height: 100%; background: var(--bg); color: var(--text);
+  font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  overflow: hidden;
+}
+
+/* ========== 顶部栏 ========== */
+.topbar {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 16px; border-bottom: 1px solid var(--border);
+  background: var(--bg-soft); height: 52px;
+}
+.back { color: var(--text-dim); text-decoration: none; font-size: 13px; transition: color .2s; }
+.back:hover { color: var(--accent); }
+.topbar h1 { font-size: 16px; font-weight: 600; flex: 0 0 auto; }
+.toolbar { display: flex; align-items: center; gap: 8px; margin-left: auto; flex-wrap: wrap; }
+.toolbar button {
+  padding: 6px 12px; background: var(--bg-card);
+  color: var(--text); border: 1px solid var(--border);
+  border-radius: 6px; cursor: pointer; font-size: 13px;
+  transition: background .2s, border-color .2s;
+}
+.toolbar button:hover { background: #2a2f3d; border-color: var(--accent); }
+.md-toggle {
+  display: flex; align-items: center; gap: 6px;
+  color: var(--text-dim); font-size: 13px; cursor: pointer;
+  padding-left: 8px; border-left: 1px solid var(--border);
+}
+
+/* ========== 工作区 ========== */
+.workspace {
+  display: flex; height: calc(100vh - 52px);
+}
+.pane {
+  display: flex; flex-direction: column; min-width: 0;
+  background: var(--bg);
+}
+.pane-left { flex: 1; border-right: 1px solid var(--border); }
+.pane-right { flex: 1; }
+.pane-header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; font-size: 13px; color: var(--text-dim);
+  background: var(--bg-soft); border-bottom: 1px solid var(--border);
+}
+.pane-meta { font-size: 12px; color: var(--text-dim); }
+.mini-btn {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-dim); padding: 2px 8px; border-radius: 4px;
+  cursor: pointer; font-size: 12px;
+}
+.mini-btn:hover { color: var(--text); border-color: var(--accent); }
+
+/* 左侧输入框 */
+#jsonInput {
+  flex: 1; width: 100%; padding: 14px;
+  background: var(--bg); color: var(--text);
+  border: none; outline: none; resize: none;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 13px; line-height: 1.6;
+}
+.status-bar {
+  padding: 6px 14px; font-size: 12px;
+  background: var(--bg-soft); border-top: 1px solid var(--border);
+  color: var(--text-dim);
+}
+.status-bar.ok { color: #4ade80; }
+.status-bar.err { color: #f87171; }
+
+/* ========== 中间分隔条 ========== */
+.divider {
+  width: 8px; background: var(--bg-soft);
+  border-left: 1px solid var(--border); border-right: 1px solid var(--border);
+  position: relative; cursor: col-resize;
+  display: flex; align-items: center; justify-content: center;
+}
+.divider-btn {
+  position: absolute;
+  width: 22px; height: 44px;
+  background: var(--bg-card); border: 1px solid var(--border);
+  color: var(--text-dim); border-radius: 4px;
+  cursor: pointer; font-size: 11px;
+  display: flex; align-items: center; justify-content: center;
+  transition: color .2s, background .2s;
+  z-index: 10;
+}
+.divider-btn:hover { color: var(--accent); background: #2a2f3d; }
+
+/* 折叠状态 */
+.workspace.left-collapsed .pane-left { flex: 0 0 0; overflow: hidden; border-right: none; }
+.workspace.left-collapsed .divider { cursor: pointer; }
+
+/* ========== 右侧 JSON 输出 ========== */
+.json-output {
+  flex: 1; overflow: auto; padding: 14px 16px;
+  font-family: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 13px; line-height: 1.7;
+}
+.json-output .placeholder {
+  color: var(--text-dim); text-align: center;
+  padding: 40px 20px; font-family: inherit;
+}
+.json-output .error-msg {
+  color: #f87171; padding: 14px;
+  background: rgba(248, 113, 113, 0.08);
+  border-left: 3px solid #f87171; border-radius: 4px;
+  font-family: inherit; white-space: pre-wrap;
+}
+
+/* ========== JSON 树节点 ========== */
+.json-tree { font-family: inherit; }
+.json-row { display: flex; align-items: flex-start; padding: 0; }
+.json-toggle {
+  display: inline-block; width: 14px; flex-shrink: 0;
+  text-align: center; cursor: pointer; user-select: none;
+  color: var(--text-dim); transition: transform .15s, color .2s;
+  line-height: 1.7;
+}
+.json-toggle:hover { color: var(--accent); }
+.json-toggle.collapsed { transform: rotate(-90deg); }
+.json-toggle.leaf { cursor: default; visibility: hidden; }
+
+.json-content { flex: 1; min-width: 0; }
+.json-children {
+  margin-left: 14px;
+  border-left: 1px dashed rgba(139, 147, 167, 0.2);
+  padding-left: 8px;
+}
+.json-children.hidden { display: none; }
+
+/* 行内文本 */
+.json-key { color: var(--c-key); }
+.json-string { color: var(--c-string); word-break: break-all; }
+.json-number { color: var(--c-number); }
+.json-boolean { color: var(--c-boolean); }
+.json-null { color: var(--c-null); font-style: italic; }
+.json-bracket { color: var(--c-bracket); }
+.json-comma { color: var(--c-comma); }
+.json-colon { color: var(--c-comma); margin: 0 4px 0 2px; }
+.json-meta {
+  color: var(--text-dim); font-size: 11px;
+  margin-left: 6px; font-style: italic;
+}
+.json-preview {
+  color: var(--text-dim); margin-left: 6px;
+  font-size: 12px; opacity: 0.7;
+}
+
+/* hover 高亮整行 */
+.json-row:hover > .json-content { background: rgba(108, 140, 255, 0.06); border-radius: 3px; }
+
+/* ========== Markdown 渲染容器 ========== */
+/* ── MD 包裹容器 ─────────────────────── */
+.md-wrap {
+  position: relative;
+  margin: 4px 0 4px 14px;
+  border-left: 3px solid var(--accent);
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+/* ── 复制按钮 ────────────────────────── */
+.md-copy-btn {
+  position: absolute;
+  top: 8px; right: 8px;
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg-card);
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 11px;
+  opacity: 0;                         /* 平时隐藏 */
+  transition: opacity .15s, color .15s, background .15s;
+  z-index: 5;
+}
+.md-wrap:hover .md-copy-btn { opacity: 1; }  /* hover 才出现 */
+.md-copy-btn:hover { color: var(--text); background: #2a2f3d; }
+.md-copy-btn.copied {
+  color: #4ade80; border-color: #4ade80;
+  opacity: 1;
+}
+/* copied 状态下在图标后追加文字（用 JS 控制 title 就够了，也可加伪元素） */
+
+/* ── MD 内容区 ───────────────────────── */
+.md-block {
+  padding: 10px 38px 10px 14px;      /* 右侧留给复制按钮 */
+  font-family: -apple-system, "Segoe UI", "PingFang SC", sans-serif;
+  font-size: 13px; line-height: 1.7;
+  color: var(--text);
+  white-space: normal;
+  overflow-x: auto;
+}
+.md-block h1 { font-size: 17px; margin: 8px 0 6px; }
+.md-block h2 { font-size: 15px; margin: 8px 0 6px; }
+.md-block h3 { font-size: 14px; margin: 6px 0 4px; }
+.md-block p  { margin: 5px 0; }
+.md-block ul, .md-block ol { margin: 5px 0; padding-left: 22px; }
+.md-block li { margin: 2px 0; }
+.md-block code {
+  background: rgba(108,140,255,.15); color: #ffd580;
+  padding: 1px 5px; border-radius: 3px;
+  font-family: "JetBrains Mono", Consolas, monospace; font-size: 12px;
+}
+.md-block pre {
+  background: #0b0d12; padding: 10px; border-radius: 6px;
+  overflow-x: auto; margin: 8px 0;
+}
+.md-block pre code { background: transparent; color: #d4d4d4; }
+.md-block blockquote {
+  border-left: 3px solid var(--text-dim);
+  padding-left: 10px; color: var(--text-dim); margin: 6px 0;
+}
+.md-block table  { border-collapse: collapse; margin: 8px 0; width: 100%; }
+.md-block th, .md-block td { border: 1px solid var(--border); padding: 4px 10px; }
+.md-block a { color: var(--accent); }
+
+/* 长字符串折叠 */
+.string-long {
+  cursor: pointer; position: relative;
+}
+.string-long.collapsed .string-full { display: none; }
+.string-long:not(.collapsed) .string-short { display: none; }
+.string-toggle-inline {
+  color: var(--accent); cursor: pointer; font-size: 11px;
+  margin-left: 4px; user-select: none;
+}

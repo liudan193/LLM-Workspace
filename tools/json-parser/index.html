@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>JSON 解析器 · LLM-Workspace</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Markdown 解析库 -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <!-- XSS 过滤 -->
+  <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
+</head>
+<body>
+  <!-- 顶部栏 -->
+  <header class="topbar">
+    <a href="../../" class="back">← 返回 LLM-Workspace</a>
+    <h1>JSON 解析器</h1>
+    <div class="toolbar">
+      <button id="btnFormat" title="格式化左侧输入">格式化</button>
+      <button id="btnMinify" title="压缩左侧输入">压缩</button>
+      <button id="btnSample" title="加载示例">示例</button>
+      <button id="btnClear" title="清空">清空</button>
+      <button id="btnExpandAll">展开全部</button>
+      <button id="btnCollapseAll">折叠全部</button>
+      <label class="md-toggle">
+        <input type="checkbox" id="mdToggle" /> Markdown 渲染字符串
+      </label>
+    </div>
+  </header>
+
+  <!-- 主体：左右分栏 -->
+  <main class="workspace">
+    <!-- 左侧：输入 -->
+    <section class="pane pane-left" id="paneLeft">
+      <div class="pane-header">
+        <span>📋 粘贴 JSON（支持单个对象 / JSON List / JSONL）</span>
+        <button id="btnPaste" class="mini-btn">从剪贴板粘贴</button>
+      </div>
+      <textarea
+        id="jsonInput"
+        spellcheck="false"
+        placeholder='在此粘贴 JSON，例如：&#10;{"name": "GPT", "type": "LLM"}&#10;&#10;或 JSON 数组：&#10;[{"id":1}, {"id":2}]&#10;&#10;或 JSONL（每行一个 JSON）：&#10;{"a":1}&#10;{"b":2}'
+      ></textarea>
+      <div class="status-bar" id="statusBar">就绪</div>
+    </section>
+
+    <!-- 中间折叠条 -->
+    <div class="divider" id="divider" title="折叠/展开左侧">
+      <button id="toggleLeft" class="divider-btn">◀</button>
+    </div>
+
+    <!-- 右侧：解析结果 -->
+    <section class="pane pane-right">
+      <div class="pane-header">
+        <span>🌳 解析结果</span>
+        <span class="pane-meta" id="paneMeta"></span>
+      </div>
+      <div id="jsonOutput" class="json-output">
+        <div class="placeholder">👈 在左侧粘贴 JSON 后即可在这里查看树形结构</div>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

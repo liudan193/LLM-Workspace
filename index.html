@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LLM-Workspace · Toolkit for LLMs</title>
+  <meta name="description" content="LLM-Workspace — 面向大模型开发者的在线工具集合" />
+  <link rel="stylesheet" href="assets/css/main.css" />
+</head>
+<body>
+
+  <!-- 导航 -->
+  <header class="navbar">
+    <div class="nav-inner">
+      <a href="./" class="logo">LLM-Workspace</a>
+      <nav class="nav-links">
+        <a href="#frequent">常用</a>
+        <a href="#all-tools">全部工具</a>
+        <a href="https://github.com/liudan193/LLM-Workspace" target="_blank" rel="noopener">GitHub ↗</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero：去掉搜索，压缩高度 -->
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>LLM-Workspace</h1>
+      <p class="tagline">Toolkit for LLMs</p>
+      <p class="subtitle">面向大模型开发者的在线工具集合 · 纯前端 · 数据不出浏览器</p>
+    </div>
+  </section>
+
+  <!-- 常用工具 -->
+  <section id="frequent" class="section section-frequent">
+    <div class="container">
+      <h2 class="section-title">常用工具</h2>
+      <div id="frequentGrid" class="tool-grid">
+        <p class="empty-tip">点击工具卡片右上角的 ☆ 可收藏到这里</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 全部工具 -->
+  <section id="all-tools" class="section section-all">
+    <div class="container">
+      <h2 class="section-title">全部工具</h2>
+      <div class="category-tabs" id="categoryTabs"></div>
+      <div id="allGrid" class="tool-grid"></div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <span>© 2026 LLM-Workspace</span>
+      <span class="sep">·</span>
+      <span>Open Source · Built for LLM Developers</span>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
